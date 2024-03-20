@@ -9,48 +9,13 @@
     <title>AMITY</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <!--navbar-->
-    <nav class="navbar navbar-expand-sm bg-light navbar-light">
-        <div class="container-fluid">
-            <a class="navbar-brand mx-3" href="main.html">AMITY</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav nav-underline mx-5">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Q&A</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">지식</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">커뮤니티</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">이벤트</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">공지사항</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav nav-underline">
-                    <li class="nav-item">
-                        <a class="nav-link" href="loginForm.html">로그인</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-primary" style="--bs-text-opacity: .7;" href="signupForm.html">회원가입</a>
-                    </li>
-                </ul>
-            </div>
 
-        </div>
-    </nav>
-
-    <!--question detail-->
+    <!--knowledge detail-->
     <div class="container my-3">
-        <!-- 질문 -->
+        <div class="text-center my-3">
+            <h2>지식</h2>
+        </div>
+        <!-- 작성한 글 -->
         <div class="card my-3">
             <div class="card-body">
                 <h3 class="card-title"><Strong>Card title</Strong></h3>
@@ -68,8 +33,7 @@
                     </div>
                 </div>
                 <div class="my-3">
-                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-                       th:data-uri="@{|/question/vote/${question.id}|}">
+                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary">
                         추천
                         <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voter)}"></span>
                     </a>
@@ -78,15 +42,19 @@
                 </div>
             </div>
         </div>
-        <!-- 답변의 갯수 표시 -->
-        <h6 class="border-bottom my-3 py-2" >1개의 답변</h6>
-        <!-- 답변 작성 -->
+
+        <!-- 댓글의 갯수 표시 -->
+        <h6 class="border-bottom my-3 py-2" >1개의 댓글</h6>
+
+        <!-- 댓글 작성 -->
         <form method="post" class="my-3">
-            <div></div>
             <textarea  class="form-control" rows="5"></textarea>
-            <input type="submit" value="답변등록" class="btn btn-primary my-2">
+            <div class="">
+                <input type="submit" value="댓글등록" class="btn btn-primary my-2 ">
+            </div>
         </form>
-        <!-- 답변 반복 시작 -->
+
+        <!-- 댓글 반복 시작 -->
         <div class="card my-3" >
             <a ></a>
             <div class="card-body">
@@ -116,20 +84,9 @@
                 </div>
             </div>
         </div>
-        <!-- 답변 반복 끝  -->
+        <!-- 댓글 반복 끝  -->
     </div>
 
-
-    <!--footer-->
-    <footer class="py-3 mt-auto">
-        <hr/>
-        <div class="container footer text-center">
-            <p>
-                작업기간 : 2024-03-18 ~ 2024-03-31 / 만든사람 : 남기석
-            </p>
-
-        </div>
-    </footer>
 </body>
 
 </html>

@@ -10,9 +10,9 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <!--navbar-->
-    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <nav th:fragment="navbar" class="navbar navbar-expand-sm bg-light navbar-light">
         <div class="container-fluid">
-            <a class="navbar-brand mx-3" href="main.html">AMITY</a>
+            <a class="navbar-brand mx-3" href="common.html">AMITY</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -20,7 +20,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav nav-underline mx-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Q&A</a>
+                        <a class="nav-link" href="questions.html">Q&A</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">지식</a>
@@ -48,34 +48,6 @@
         </div>
     </nav>
 
-    <!--questions save-->
-    <div class="container">
-        <h5 class="my-3 border-bottom pb-2">질문등록</h5>
-        <form  method="post">
-            <input type="hidden"/>
-            <div></div>
-            <div class="mb-3">
-                <label for="subject" class="form-label">제목</label>
-                <input type="text" id="subject"  class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="content" class="form-label">내용</label>
-                <textarea id="content" class="form-control" rows="10"></textarea>
-            </div>
-            <input type="submit" value="등록하기" class="btn btn-primary my-2">
-        </form>
-    </div>
-
-    <!--footer-->
-    <footer class="py-3 mt-auto">
-        <hr/>
-        <div class="container footer text-center">
-            <p>
-                작업기간 : 2024-03-18 ~ 2024-03-31 / 만든사람 : 남기석
-            </p>
-
-        </div>
-    </footer>
 </body>
 
 </html>
