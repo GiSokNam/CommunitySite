@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,14 +11,14 @@
     <title>AMITY</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
-
+<div layout:fragment="content">
     <!--notice list-->
     <div class="text-center my-3">
         <h2>공지사항</h2>
     </div>
     <div class="row my-3">
         <div class="col-6">
-            <a href="questionsForm.html" class="btn btn-primary">등록하기</a>
+            <a href="new.html" class="btn btn-primary">등록하기</a>
         </div>
         <div class="col-6">
             <div class="input-group">
@@ -69,6 +71,7 @@
             </ul>
         </nav>
     </div>
+</div>
 </body>
 
 </html>

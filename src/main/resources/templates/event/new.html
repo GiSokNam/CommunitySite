@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +13,7 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!--registration form-->
-    <div class="container">
+    <div layout:fragment="content" class="container">
         <div class="text-center my-3">
             <h2>이벤트</h2>
         </div>
