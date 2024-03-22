@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imitation.amity.repository.question.QuestionMapper">
+    <select id="findAllByKeyword" resultType="Question" parameterType="String" >
+        select id
+             , subject
+             , content
+             , author
+             , viewCount
+             , likeCount
+             , hateCount
+             , FORMATDATETIME(createDate, 'yyyy-MM-dd') as createDate
+        from question
+        <where>
+            <if test="kw != null and kw != ''">
+                and subject like concat('%', #{kw}, '%')
+            </if>
+        </where>
+        order by id desc
+        limit #{pageable.offset},#{pageable.pageSize}
+    </select>
+
+    <insert id="save" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
+        insert into question(subject, content)
+        values(#{subject}, #{content})
+    </insert>
+
+
+</mapper>

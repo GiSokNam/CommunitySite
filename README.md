@@ -114,7 +114,7 @@ create table NoticeBoard
  viewCount int DEFAULT 0,
  likeCount int DEFAULT 0,
  hateCount int DEFAULT 0,
- createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+ createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
  modifyDate TIMESTAMP,
  primary key (id)
 );
@@ -129,7 +129,7 @@ create table NoticeBoardComment
  BulletinBoardId bigint,
  likeCount int DEFAULT 0,
  hateCount int DEFAULT 0,
- createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+ createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
  modifyDate TIMESTAMP,
  primary key (id),
  foreign key (boardId) references board (id) ON DELETE CASCADE
@@ -145,7 +145,7 @@ create table AmityUser
  email varchar(100),
  realName varchar(100),
  nickname varchar(100),
- createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+ createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
  modifyDate TIMESTAMP,
  primary key (id)
 ); 
