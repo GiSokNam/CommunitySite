@@ -2,25 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imitation.amity.repository.question.QuestionMapper">
-    <select id="findAllByKeyword" resultType="Question" parameterType="String" >
-        select id
+    <!-- 조회 -->
+    <select id="findAllByKeyword" parameterType="RequestList" resultType="Question">
+        <!--select id
              , subject
              , content
              , author
              , viewCount
              , likeCount
              , hateCount
-             , FORMATDATETIME(createDate, 'yyyy-MM-dd') as createDate
+             , FORMATDATETIME(createDate, 'yyyy-MM-dd') as createDate-->
+        select distinct A.*
+        from question A
+        left join Answer B on B.question_id=A.id
+        <where>
+            <if test="kw != null and kw != ''">
+                and subject like concat('%', #{kw}, '%')
+            </if>
+        </where>
+        order by A.id desc
+        OFFSET #{requestList.pageable.offset} ROWS FETCH NEXT #{requestList.pageable.pageSize} ROWS ONLY
+<!--        limit #{requestList.pageable.offset}, #{requestList.pageable.pageSize}-->
+    </select>
+
+    <!-- 총 갯수 -->
+    <select id="totalPageCnt" parameterType="Question" resultType="int">
+        select count(*)
         from question
         <where>
             <if test="kw != null and kw != ''">
                 and subject like concat('%', #{kw}, '%')
             </if>
         </where>
-        order by id desc
-        limit #{pageable.offset},#{pageable.pageSize}
     </select>
 
+    <!-- 등록 -->
     <insert id="save" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
         insert into question(subject, content)
         values(#{subject}, #{content})

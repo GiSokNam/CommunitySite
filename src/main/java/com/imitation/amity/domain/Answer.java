@@ -10,5 +10,5 @@ public class Answer {
     private String content;
     private LocalDateTime createdDate;
     private LocalDateTime modifyDate;
-    private Long boardId;
+    private Question question;
 }
