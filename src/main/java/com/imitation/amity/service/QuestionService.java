@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,6 +33,7 @@ public class QuestionService {
         Question question = new Question();
         question.setSubject(questionForm.getSubject());
         question.setContent(questionForm.getContent());
+        question.setCreateDate(LocalDateTime.now());
         questionRepository.save(question);
     }
 }

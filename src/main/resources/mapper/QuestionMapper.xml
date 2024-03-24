@@ -2,27 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imitation.amity.repository.question.QuestionMapper">
+
+    <resultMap id="QuestionResultMap" type="Question">
+        <id property="id" column="q_id" />
+        <result property="subject" column="subject" />
+        <result property="content" column="content" />
+        <result property="createDate" column="q_create_date" />
+        <result property="modifyDate" column="q_modify_date" />
+        <collection property="answerList" ofType="Answer"
+                    resultMap="AnswerResultMap" />
+    </resultMap>
+
+    <resultMap id="AnswerResultMap" type="Answer">
+        <id property="id" column="a_id" />
+        <result property="content" column="a_content" />
+        <result property="createDate" column="a_create_date" />
+        <result property="modifyDate" column="a_modify_date" />
+        <association property="question" javaType="Question"
+                     column="q_id" foreignColumn="id"
+                     select="selectQuestionById"/>
+    </resultMap>
+
+    <!-- Question 객체를 ID로 조회하는 쿼리 -->
+    <select id="selectQuestionById" resultType="Question">
+        SELECT * FROM Question WHERE id = #{id}
+    </select>
+
     <!-- 조회 -->
-    <select id="findAllByKeyword" parameterType="RequestList" resultType="Question">
-        <!--select id
-             , subject
-             , content
-             , author
-             , viewCount
-             , likeCount
-             , hateCount
-             , FORMATDATETIME(createDate, 'yyyy-MM-dd') as createDate-->
-        select distinct A.*
-        from question A
-        left join Answer B on B.question_id=A.id
+    <select id="findAllByKeyword" parameterType="RequestList" resultMap="QuestionResultMap">
+        SELECT q.id as q_id, q.subject, q.content, q.create_date as q_create_date, q.modify_date as q_modify_date,
+        a.id as a_id, a.content as a_content, a.create_date as a_create_date, a.modify_date as a_modify_date
+        FROM Question q
+        LEFT JOIN Answer a ON q.id = a.question_id
         <where>
             <if test="kw != null and kw != ''">
                 and subject like concat('%', #{kw}, '%')
             </if>
         </where>
-        order by A.id desc
+        order by q.id desc
         OFFSET #{requestList.pageable.offset} ROWS FETCH NEXT #{requestList.pageable.pageSize} ROWS ONLY
-<!--        limit #{requestList.pageable.offset}, #{requestList.pageable.pageSize}-->
     </select>
 
     <!-- 총 갯수 -->

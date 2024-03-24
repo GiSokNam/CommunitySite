@@ -1,5 +1,6 @@
 package com.imitation.amity.controller.question;
 
+import com.imitation.amity.controller.answer.AnswerForm;
 import com.imitation.amity.domain.Question;
 import com.imitation.amity.service.QuestionService;
 import jakarta.validation.Valid;
@@ -45,8 +46,12 @@ public class QuestionController {
         return "redirect:/question/list";
     }
 
-    @GetMapping("/detail")
-    public String detail() {
+    @GetMapping("/detail/{id}")
+    public String detail(Model model,
+                         @PathVariable("id") Long id,
+                         AnswerForm answerForm) {
+
+
         return "question/detail";
     }
 }

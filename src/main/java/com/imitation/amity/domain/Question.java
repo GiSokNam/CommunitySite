@@ -10,7 +10,7 @@ public class Question {
     private Long id;
     private String subject;
     private String content;
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
     private LocalDateTime modifyDate;
     private List<Answer> answerList;
     private AmityUser author;

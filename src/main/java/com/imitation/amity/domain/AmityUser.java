@@ -12,6 +12,6 @@ public class AmityUser {
     private String email;
     private String realName;
     private String nickname;
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class Answer {
     private Long id;
     private String content;
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
     private LocalDateTime modifyDate;
     private Question question;
 }
