@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,5 +25,21 @@ public class QuestionRepository {
 
     public void save(Question question) {
         questionMapper.save(question);
+    }
+
+    public Optional<Question> findById(Long id) {
+        return questionMapper.findById(id);
+    }
+
+    public void modify(Question question) {
+        questionMapper.modify(question);
+    }
+
+    public void delete(Question question) {
+        questionMapper.delete(question);
+    }
+
+    public void vote(Question question) {
+        questionMapper.vote(question);
     }
 }

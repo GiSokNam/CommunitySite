@@ -2,6 +2,7 @@ package com.imitation.amity.service;
 
 import com.imitation.amity.common.RequestList;
 import com.imitation.amity.controller.question.QuestionForm;
+import com.imitation.amity.domain.AmityUser;
 import com.imitation.amity.domain.Question;
 import com.imitation.amity.repository.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,11 +31,37 @@ public class QuestionService {
         return new PageImpl<>(content, pageable, totalPage);
     }
 
-    public void create(QuestionForm questionForm) {
+    public void create(QuestionForm questionForm, AmityUser amityUser) {
         Question question = new Question();
         question.setSubject(questionForm.getSubject());
         question.setContent(questionForm.getContent());
         question.setCreateDate(LocalDateTime.now());
+        question.setAuthor(amityUser);
         questionRepository.save(question);
+    }
+
+    public Question getQuestion(Long id) {
+        Optional<Question> question = questionRepository.findById(id);
+        if (question.isPresent()) {
+            return question.get();
+        } else {
+            throw new RuntimeException("question not found");
+        }
+    }
+
+    public void modify(Question question, QuestionForm questionForm) {
+        question.setSubject(questionForm.getSubject());
+        question.setContent(questionForm.getContent());
+        question.setModifyDate(LocalDateTime.now());
+        questionRepository.modify(question);
+    }
+
+    public void delete(Question question) {
+        questionRepository.delete(question);
+    }
+
+    public void vote(Question question, AmityUser amityUser) {
+        question.getVoter().add(amityUser);
+        questionRepository.vote(question);
     }
 }

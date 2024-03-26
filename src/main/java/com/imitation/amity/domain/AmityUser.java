@@ -10,8 +10,4 @@ public class AmityUser {
     private String username;
     private String password;
     private String email;
-    private String realName;
-    private String nickname;
-    private LocalDateTime createDate;
-    private LocalDateTime modifyDate;
 }

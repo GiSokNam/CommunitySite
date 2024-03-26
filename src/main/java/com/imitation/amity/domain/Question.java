@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class Question {
@@ -14,4 +15,5 @@ public class Question {
     private LocalDateTime modifyDate;
     private List<Answer> answerList;
     private AmityUser author;
+    Set<AmityUser> voter;
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imitation.amity.repository.answer.AnswerMapper">
+    <insert id="save" parameterType="Answer" useGeneratedKeys="true" keyProperty="id">
+        insert into answer(content, createDate, authorId, questionId)
+        values(#{content}, #{createDate}, #{author.id}, #{question.Id})
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="Answer">
+        select *
+        from Answer
+        where id = #{id}
+    </select>
+
+    <update id="modify" parameterType="Answer">
+        update answer
+        set content=#{content}, modifyDate=#{modifyDate}
+        where id=#{id}
+
+    </update>
+
+    <delete id="delete" parameterType="Answer">
+        delete from Answer where id = #{id}
+    </delete>
+
+    <insert id="vote" parameterType="Answer" useGeneratedKeys="true" keyProperty="id">
+        insert into answerVoter(answerId)
+        values(#{id})
+    </insert>
+
+
+</mapper>

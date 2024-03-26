@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,19 +11,20 @@
     <title>AMITY</title>
 </head>
 <body>
+<div layout:fragment="content" class="container">
     <div class="mx-auto p-2 my-5" style="width: 400px;">
         <h3 class="text-center">AMITY에 오신걸 환영합니다.</h3>
         <hr/>
     </div>
 
     <div class="mx-auto p-2" style="width: 400px;">
-        <form>
+        <form th:action="@{/member/login}" method="post">
             <div>
                 <div>
-                    <label for="loginId" class="form-label my-3">아이디</label>
-                    <input type="text" class="form-control" id="loginId" placeholder="">
+                    <label for="username" class="form-label my-3">아이디</label>
+                    <input type="text" class="form-control" id="username">
                     <label for="password" class="form-label my-3">비밀번호</label>
-                    <input type="password" class="form-control" id="password" placeholder="">
+                    <input type="password" class="form-control" id="password">
                 </div>
                 <div class="my-3" align="right">
                     <div>
@@ -34,9 +37,10 @@
             </div>
             <p>
                 <span>아직 회원이 아니신가요?</span>
-                <a class="text-blue-500 underline hover:text-blue-400" href="signup.html">회원가입</a>
+                <a class="text-blue-500 underline hover:text-blue-400" th:href="@{/member/signup}">회원가입</a>
             </p>
         </form>
     </div>
+</div>
 </body>
 </html>

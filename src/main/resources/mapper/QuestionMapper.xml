@@ -9,8 +9,26 @@
         <result property="content" column="content" />
         <result property="createDate" column="q_create_date" />
         <result property="modifyDate" column="q_modify_date" />
+        <collection property="author" ofType="AmityUser"
+                    resultMap="AuthorResultMap" />
         <collection property="answerList" ofType="Answer"
                     resultMap="AnswerResultMap" />
+        <collection property="voter" ofType="AmityUser"
+                    resultMap="VoterResultMap" />
+    </resultMap>
+
+    <resultMap id="AuthorResultMap" type="AmityUser">
+        <id property="id" column="au_id" />
+        <result property="username" column="au_username" />
+        <result property="email" column="au_email" />
+    </resultMap>
+
+    <resultMap id="VoterResultMap" type="AmityUser">
+        <id property="id" column="au_id" />
+        <result property="username" column="au_username" />
+        <result property="email" column="au_email" />
+        <result property="realName" column="au_realName" />
+        <result property="Nickname" column="au_Nickname" />
     </resultMap>
 
     <resultMap id="AnswerResultMap" type="Answer">
@@ -18,22 +36,51 @@
         <result property="content" column="a_content" />
         <result property="createDate" column="a_create_date" />
         <result property="modifyDate" column="a_modify_date" />
+        <association property="author" resultMap="AuthorResultMap"/>
         <association property="question" javaType="Question"
                      column="q_id" foreignColumn="id"
                      select="selectQuestionById"/>
+        <association property="voter" resultMap="VoterResultMap"/>
     </resultMap>
 
     <!-- Question 객체를 ID로 조회하는 쿼리 -->
     <select id="selectQuestionById" resultType="Question">
-        SELECT * FROM Question WHERE id = #{id}
+        SELECT *
+        FROM Question
+        WHERE id = #{id}
     </select>
+
+    <!--<resultMap id="AnswerResultMap" type="Answer">
+        <id property="id" column="a_id" />
+        <result property="content" column="a_content" />
+        <result property="createDate" column="a_create_date" />
+        <result property="modifyDate" column="a_modify_date" />
+        <association property="question" javaType="Question"
+                     column="q_id" foreignColumn="id"
+                     select="selectQuestionById"/>
+    </resultMap>-->
+
+
 
     <!-- 조회 -->
     <select id="findAllByKeyword" parameterType="RequestList" resultMap="QuestionResultMap">
-        SELECT q.id as q_id, q.subject, q.content, q.create_date as q_create_date, q.modify_date as q_modify_date,
-        a.id as a_id, a.content as a_content, a.create_date as a_create_date, a.modify_date as a_modify_date
+        SELECT q.id as q_id
+                , q.subject
+                , q.content
+                , q.create_date as q_create_date
+                , q.modify_date as q_modify_date
+                , a.id as a_id
+                , a.content as a_content
+                , a.create_date as a_create_date
+                , a.modify_date as a_modify_date
+                , a.author_id as a_author_id
+                , a.question_id as a_question_id
+                , su.id as au_id
+                , su.email as au_email
+                , su.username as au_username
         FROM Question q
         LEFT JOIN Answer a ON q.id = a.question_id
+        LEFT JOIN AMITYUSER su ON su.id = a.author_id
         <where>
             <if test="kw != null and kw != ''">
                 and subject like concat('%', #{kw}, '%')
@@ -56,9 +103,45 @@
 
     <!-- 등록 -->
     <insert id="save" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
-        insert into question(subject, content)
-        values(#{subject}, #{content})
+        insert into question(subject, content, author_id)
+        values(#{subject}, #{content}, #{author_id})
     </insert>
 
+    <!-- 상세페이지 조회 -->
+    <select id="findById" parameterType="Long" resultMap="QuestionResultMap">
+        SELECT q.id as q_id
+        , q.subject
+        , q.content
+        , q.create_date as q_create_date
+        , q.modify_date as q_modify_date
+        , a.id as a_id
+        , a.content as a_content
+        , a.create_date as a_create_date
+        , a.modify_date as a_modify_date
+        , a.author_id as a_author_id
+        , a.question_id as a_question_id
+        , su.id as au_id
+        , su.email as au_email
+        , su.username as au_username
+        FROM Question q
+        LEFT JOIN Answer a ON q.id = a.question_id
+        LEFT JOIN AMITYUSER su ON su.id = a.author_id
+        where q.id=#{id}
+    </select>
+
+    <update id="modify" parameterType="Question">
+        update question
+        set subject=#{subject}, content=#{content}, modifyDate=#{modifyDate}
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Question">
+        delete from question where id=#{id}
+    </delete>
+
+    <insert id="vote" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
+        insert into questionVoter(questionId)
+        values(#{id})
+    </insert>
 
 </mapper>

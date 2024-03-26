@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +13,7 @@
     <!--navbar-->
     <nav th:fragment="navbar" class="navbar navbar-expand-sm bg-light navbar-light">
         <div class="container-fluid">
-            <a class="navbar-brand mx-3" href="../main.html">AMITY</a>
+            <a class="navbar-brand mx-3" th:href="@{|/|}">AMITY</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -20,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav nav-underline mx-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="../question/list.html">Q&A</a>
+                        <a class="nav-link" th:href="@{|/question/list|}">Q&A</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../knowledge/list.html">지식</a>
@@ -37,10 +38,11 @@
                 </ul>
                 <ul class="navbar-nav nav-underline">
                     <li class="nav-item">
-                        <a class="nav-link" href="../member/login.html">로그인</a>
+                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{|/member/login|}">로그인</a>
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{|/member/logout|}">로그인</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" style="--bs-text-opacity: .7;" href="../member/signup.html">회원가입</a>
+                        <a class="nav-link text-primary" style="--bs-text-opacity: .7;" th:href="@{|/member/signup|}">회원가입</a>
                     </li>
                 </ul>
             </div>
