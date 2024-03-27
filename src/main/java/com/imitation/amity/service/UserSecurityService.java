@@ -22,17 +22,17 @@ public class UserSecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AmityUser> amityUser = userRepository.findByUsername(username);
-        if (amityUser.isEmpty()) {
+        Optional<AmityUser> _amityUser = userRepository.findByUsername(username);
+        if (_amityUser.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
         }
-        AmityUser user = amityUser.get();
+        AmityUser amityUser = _amityUser.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         if ("admin".equals(username)) {
             authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
         } else {
             authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         }
-        return new User(user.getUsername(), user.getPassword(), authorities);
+        return new User(amityUser.getUsername(), amityUser.getPassword(), authorities);
     }
 }

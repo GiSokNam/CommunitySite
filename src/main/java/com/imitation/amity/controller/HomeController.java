@@ -8,7 +8,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "main";
+        return "redirect:/question/list";
     }
 
 
