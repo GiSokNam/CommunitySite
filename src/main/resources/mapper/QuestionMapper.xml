@@ -86,6 +86,7 @@
         <result property="createDate" column="a_createDate" />
         <result property="modifyDate" column="a_modifyDate" />
         <collection property="author" column="author_id" ofType="AmityUser" select="getAuthor"/>
+        <collection property="voter" column="a_id" ofType="AmityUser" select="getVoterListByAnswerId"/>
     </resultMap>
 
     <select id="getAnswerListByQuestionId2" resultMap="answerResultMap">

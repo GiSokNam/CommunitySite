@@ -21,7 +21,19 @@
         <result column="modifyDate" property="modifyDate"/>
         <collection property="author" column="authorId" ofType="AmityUser" select="getUsername"/>
         <collection property="question" column="questionId" ofType="Question" select="getQuestion"/>
+        <collection property="voter" column="id" ofType="AmityUser" select="getVoterListByAnswerId"/>
     </resultMap>
+
+    <select id="getVoterListByAnswerId" resultType="AmityUser">
+        SELECT
+        su.id AS id,
+        su.email AS email,
+        su.password AS password,
+        su.username AS username
+        FROM answer_voter av
+        LEFT JOIN site_user su ON av.voter_id = su.id
+        WHERE av.answer_id = #{answerId}
+    </select>
 
     <select id="getQuestion" resultType="Question">
         SELECT *
@@ -60,9 +72,9 @@
         delete from Answer where id = #{id}
     </delete>
 
-    <insert id="vote" parameterType="Answer" useGeneratedKeys="true" keyProperty="id">
+    <insert id="vote" parameterType="Answer">
         insert into answer_voter(answer_id, voter_id)
-        values(#{id} , #{author.id})
+        values(#{id}, #{author.id})
     </insert>
 
 
