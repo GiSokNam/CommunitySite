@@ -121,9 +121,8 @@
         su1.password AS author_password,
         su1.username AS author_username
         FROM question q
-        LEFT JOIN site_user su1 ON q.author_id = su1.id
         LEFT JOIN answer a ON a.question_id = q.id
-        LEFT JOIN site_user su2 ON a.author_id = su2.id
+        LEFT JOIN site_user su1 ON a.author_id = su1.id
         where q.id=#{id}
     </select>
 

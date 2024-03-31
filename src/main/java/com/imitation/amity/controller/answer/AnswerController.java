@@ -33,9 +33,9 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/new/{id}")
-    public String create(Model model, @PathVariable("id") Long id,
+    public String create(Model model,
                          @Valid AnswerForm answerForm, BindingResult bindingResult,
-                         Principal principal) {
+                         Principal principal, @PathVariable("id") Long id) {
         Question question = questionService.getQuestion(id);
         AmityUser amityUser = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
