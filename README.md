@@ -45,6 +45,8 @@
 - 게시글 추천
 
 ### 프로젝트 구조
+- common
+  - RequestList 
 - config
   - SecurityConfig
 - domain
@@ -52,20 +54,29 @@
   - Answer
   - AmityUser
 - controller
-  - QuestionController
-  - AnswerController
-  - AmityUserController
+  - question 
+    - QuestionController
+    - QuestionForm
+  - answer
+    - AnswerController
+    - AnswerForm
+  - user
+    - UserController
+    - UserForm
+  - HomeController 
 - service
   - QuestionService
   - AnswerService
-  - AmityUserService
+  - UserService
+  - UserRole
+  - UserSecurityService
 - repository
   - answer
     - AnswerMapper 
     - AnswerRepository 
-  - amityuser
-    - AmityUserMapper
-    - AmityUserRepository
+  - user
+    - UserMapper
+    - UserRepository
   - question
     - QuestionMapper
     - QuestionRepository
@@ -73,7 +84,6 @@
   - QuestionMapper.xml
   - AnswerMapper.xml
   - AmityUserMapper.xml
-
 
 ### DB sql
 ```
