@@ -141,10 +141,10 @@ create table answer (
 -- 댓글 좋아요 테이블
 drop table if exists answer_voter CASCADE;
 create table answer_voter (
-    question_id bigint not null,
+    answer_id bigint not null,
     voter_id bigint not null,
-    primary key (question_id, voter_id),
-    foreign key (question_id) references question(id),
+    primary key (answer_id, voter_id),
+    foreign key (answer_id) references answer(id),
     foreign key (voter_id) references amityuser(id)
 );
 

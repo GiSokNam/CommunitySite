@@ -2,20 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imitation.amity.repository.answer.AnswerMapper">
+
     <insert id="save" parameterType="Answer" useGeneratedKeys="true" keyProperty="id">
-        insert into answer(content, createDate, authorId, questionId)
-        values(#{content}, #{createDate}, #{author.id}, #{question.Id})
+        insert into answer(content, create_date, author_id, question_id)
+        values(#{content}, #{createDate}, #{author.id}, #{question.id})
     </insert>
 
-    <select id="findById" parameterType="Long" resultType="Answer">
+    <!--<select id="findById" parameterType="Long" resultType="Answer">
         select *
         from Answer
         where id = #{id}
+    </select>-->
+
+    <resultMap id="answerResultMap" type="Answer">
+        <result column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="createDate" property="createDate"/>
+        <result column="modifyDate" property="modifyDate"/>
+        <collection property="author" column="authorId" ofType="AmityUser" select="getUsername"/>
+    </resultMap>
+
+    <select id="getUsername" resultType="AmityUser">
+        SELECT *
+        FROM SITE_USER
+        WHERE id = #{authorId}
+    </select>
+
+    <select id="findById" parameterType="Long" resultMap="answerResultMap">
+        SELECT
+        a.id AS id,
+        a.content AS content,
+        a.create_date AS createDate,
+        a.modify_date AS modifyDate,
+        a.author_id AS authorId,
+        su.username AS username
+        FROM ANSWER a
+        LEFT JOIN SITE_USER su ON  a.author_id = su.id
+        WHERE a.id = #{id}
     </select>
 
     <update id="modify" parameterType="Answer">
         update answer
-        set content=#{content}, modifyDate=#{modifyDate}
+        set content=#{content}, modify_date=#{modifyDate}
         where id=#{id}
 
     </update>
@@ -25,8 +53,8 @@
     </delete>
 
     <insert id="vote" parameterType="Answer" useGeneratedKeys="true" keyProperty="id">
-        insert into answerVoter(answerId)
-        values(#{id})
+        insert into answer_voter(answer_id, voter_id)
+        values(#{id} , #{author.id})
     </insert>
 
 

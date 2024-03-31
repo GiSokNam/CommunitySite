@@ -3,91 +3,152 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imitation.amity.repository.question.QuestionMapper">
 
-    <resultMap id="QuestionResultMap" type="Question">
-        <id property="id" column="q_id" />
-        <result property="subject" column="subject" />
-        <result property="content" column="content" />
-        <result property="createDate" column="q_create_date" />
-        <result property="modifyDate" column="q_modify_date" />
-        <collection property="author" ofType="AmityUser"
-                    resultMap="AuthorResultMap" />
-        <collection property="answerList" ofType="Answer"
-                    resultMap="AnswerResultMap" />
-        <collection property="voter" ofType="AmityUser"
-                    resultMap="VoterResultMap" />
+    <resultMap id="questionResultMap" type="Question">
+        <id column="id" property="id"/>
+        <result column="subject" property="subject"/>
+        <result column="createDate" property="createDate"/>
+        <result column="modifyDate" property="modifyDate"/>
+        <collection property="answerList" column="id" ofType="Answer" select="getAnswerListByQuestionId"/>
+        <collection property="author" column="author_id" ofType="AmityUser" select="getAuthor"/>
     </resultMap>
 
-    <resultMap id="AuthorResultMap" type="AmityUser">
-        <id property="id" column="au_id" />
-        <result property="username" column="au_username" />
-        <result property="email" column="au_email" />
-    </resultMap>
-
-    <resultMap id="VoterResultMap" type="AmityUser">
-        <id property="id" column="au_id" />
-        <result property="username" column="au_username" />
-        <result property="email" column="au_email" />
-        <result property="realName" column="au_realName" />
-        <result property="Nickname" column="au_Nickname" />
-    </resultMap>
-
-    <resultMap id="AnswerResultMap" type="Answer">
-        <id property="id" column="a_id" />
-        <result property="content" column="a_content" />
-        <result property="createDate" column="a_create_date" />
-        <result property="modifyDate" column="a_modify_date" />
-        <association property="author" resultMap="AuthorResultMap"/>
-        <association property="question" javaType="Question"
-                     column="q_id" foreignColumn="id"
-                     select="selectQuestionById"/>
-        <association property="voter" resultMap="VoterResultMap"/>
-    </resultMap>
-
-    <!-- Question 객체를 ID로 조회하는 쿼리 -->
-    <select id="selectQuestionById" resultType="Question">
-        SELECT *
-        FROM Question
-        WHERE id = #{id}
-    </select>
-
-    <!--<resultMap id="AnswerResultMap" type="Answer">
-        <id property="id" column="a_id" />
-        <result property="content" column="a_content" />
-        <result property="createDate" column="a_create_date" />
-        <result property="modifyDate" column="a_modify_date" />
-        <association property="question" javaType="Question"
-                     column="q_id" foreignColumn="id"
-                     select="selectQuestionById"/>
-    </resultMap>-->
-
-
-
-    <!-- 조회 -->
-    <select id="findAllByKeyword" parameterType="RequestList" resultMap="QuestionResultMap">
-        SELECT q.id as q_id
-                , q.subject
-                , q.content
-                , q.create_date as q_create_date
-                , q.modify_date as q_modify_date
-                , a.id as a_id
-                , a.content as a_content
-                , a.create_date as a_create_date
-                , a.modify_date as a_modify_date
-                , a.author_id as a_author_id
-                , a.question_id as a_question_id
-                , su.id as au_id
-                , su.email as au_email
-                , su.username as au_username
-        FROM Question q
-        LEFT JOIN Answer a ON q.id = a.question_id
-        LEFT JOIN AMITYUSER su ON su.id = a.author_id
+    <!-- 목록 조회 -->
+    <select id="findAllByKeyword" parameterType="List" resultMap="questionResultMap">
+        SELECT DISTINCT
+        q.id,
+        q.content,
+        q.create_date AS createDate,
+        q.modify_date AS modifyDate,
+        q.subject,
+        su1.id AS author_id,
+        su1.email AS author_email,
+        su1.password AS author_password,
+        su1.username AS author_username
+        FROM question q
+        LEFT JOIN site_user su1 ON q.author_id = su1.id
+        LEFT JOIN answer a ON a.question_id = q.id
+        LEFT JOIN site_user su2 ON a.author_id = su2.id
         <where>
-            <if test="kw != null and kw != ''">
-                and subject like concat('%', #{kw}, '%')
+            <if test="kw != null and kw !=''">
+                AND(
+                q.subject LIKE CONCAT('%', #{kw}, '%')
+                OR q.content LIKE CONCAT('%', #{kw}, '%')
+                OR su1.username LIKE CONCAT('%', #{kw}, '%')
+                OR a.content LIKE CONCAT('%', #{kw}, '%')
+                OR su2.username LIKE CONCAT('%', #{kw}, '%')
+                )
             </if>
         </where>
         order by q.id desc
         OFFSET #{requestList.pageable.offset} ROWS FETCH NEXT #{requestList.pageable.pageSize} ROWS ONLY
+    </select>
+
+    <!-- 게시글에 따른 답변 목록 -->
+    <select id="getAnswerListByQuestionId" resultType="Answer">
+        SELECT
+        al.id AS id,
+        al.content AS content,
+        al.create_date AS createDate,
+        al.modify_date AS modifyDate,
+        a.id AS author_id,
+        a.email AS author_email,
+        a.password AS author_password,
+        a.username AS author_username
+        FROM answer al
+        LEFT JOIN site_user a ON al.author_id = a.id
+        WHERE al.question_id = #{questionId}
+    </select>
+
+    <!-- 게시글에 따른 글쓴이 조회 -->
+    <select id="getAuthor" resultType="AmityUser">
+        SELECT ID,USERNAME
+        FROM SITE_USER
+        WHERE id = #{author_id}
+    </select>
+
+
+    <resultMap id="questionDetailResultMap" type="Question">
+        <id column="id" property="id"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content"/>
+        <result column="createDate" property="createDate"/>
+        <result column="modifyDate" property="modifyDate"/>
+
+        <collection property="answerList" column="id" ofType="Answer" resultMap="answerResultMap" />
+
+        <collection property="author" column="author_id" ofType="AmityUser" select="getAuthor"/>
+        <collection property="voter" column="id" ofType="AmityUser" select="getVoterListByQuestionId"/>
+    </resultMap>
+    
+    <resultMap id="answerResultMap" type="Answer">
+        <id property="id" column="id" />
+        <result property="content" column="content" />
+        <result property="createDate" column="createDate" />
+        <result property="modifyDate" column="modifyDate" />
+        <collection property="author" column="author_id" ofType="AmityUser" select="getAuthor"/>
+    </resultMap>
+
+    <select id="getAnswerListByQuestionId2" resultMap="answerResultMap">
+        SELECT
+        al.id AS id,
+        al.content AS content,
+        al.create_date AS createDate,
+        al.modify_date AS modifyDate,
+        a.id AS author_id,
+        a.email AS author_email,
+        a.password AS author_password,
+        a.username AS author_username
+        FROM answer al
+        LEFT JOIN site_user a ON al.author_id = a.id
+        WHERE al.question_id = #{questionId}
+    </select>
+
+
+
+    <select id="findById" parameterType="Long" resultMap="questionDetailResultMap">
+        SELECT DISTINCT
+        q.id,
+        q.content,
+        q.create_date AS createDate,
+        q.modify_date AS modifyDate,
+        q.subject,
+        a.id AS a_id,
+        a.content AS a_content,
+        a.create_date AS a_create_date,
+        a.modify_date AS a_create_date,
+        su1.id AS author_id,
+        su1.email AS author_email,
+        su1.password AS author_password,
+        su1.username AS author_username
+        FROM question q
+        LEFT JOIN site_user su1 ON q.author_id = su1.id
+        LEFT JOIN answer a ON a.question_id = q.id
+        LEFT JOIN site_user su2 ON a.author_id = su2.id
+        where q.id=#{id}
+    </select>
+
+    <!-- 게시글 투표자 목록 가져오는 쿼리 -->
+    <select id="getVoterListByQuestionId" resultType="AmityUser">
+        SELECT
+        su.id AS id,
+        su.email AS email,
+        su.password AS password,
+        su.username AS username
+        FROM question_voter qv
+        LEFT JOIN site_user su ON qv.voter_id = su.id
+        WHERE qv.question_id = #{questionId}
+    </select>
+
+    <!-- 답변 투표자 목록 가져오는 쿼리 -->
+    <select id="getVoterListByAnswerId" resultType="AmityUser">
+        SELECT
+        su.id AS id,
+        su.email AS email,
+        su.password AS password,
+        su.username AS username
+        FROM answer_voter av
+        LEFT JOIN site_user su ON av.voter_id = su.id
+        WHERE av.answer_id = #{answerId}
     </select>
 
     <!-- 총 갯수 -->
@@ -103,45 +164,25 @@
 
     <!-- 등록 -->
     <insert id="save" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
-        insert into question(subject, content, author_id)
-        values(#{subject}, #{content}, #{author_id})
+        insert into question(subject, content, create_date, author_id)
+        values(#{subject}, #{content}, #{createDate}, #{author.id})
     </insert>
 
-    <!-- 상세페이지 조회 -->
-    <select id="findById" parameterType="Long" resultMap="QuestionResultMap">
-        SELECT q.id as q_id
-        , q.subject
-        , q.content
-        , q.create_date as q_create_date
-        , q.modify_date as q_modify_date
-        , a.id as a_id
-        , a.content as a_content
-        , a.create_date as a_create_date
-        , a.modify_date as a_modify_date
-        , a.author_id as a_author_id
-        , a.question_id as a_question_id
-        , su.id as au_id
-        , su.email as au_email
-        , su.username as au_username
-        FROM Question q
-        LEFT JOIN Answer a ON q.id = a.question_id
-        LEFT JOIN AMITYUSER su ON su.id = a.author_id
-        where q.id=#{id}
-    </select>
-
+    <!-- 수정 -->
     <update id="modify" parameterType="Question">
         update question
-        set subject=#{subject}, content=#{content}, modifyDate=#{modifyDate}
+        set subject=#{subject}, content=#{content}, modify_Date=#{modifyDate}
         where id=#{id}
     </update>
-
+    <!-- 삭제 -->
     <delete id="delete" parameterType="Question">
         delete from question where id=#{id}
     </delete>
 
-    <insert id="vote" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
-        insert into questionVoter(questionId)
-        values(#{id})
+    <!-- 추천 -->
+    <insert id="vote" parameterType="Question">
+        insert into question_voter(question_id, voter_id)
+        values(#{id}, #{author.id})
     </insert>
 
 </mapper>
