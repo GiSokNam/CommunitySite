@@ -81,10 +81,10 @@
     </resultMap>
     
     <resultMap id="answerResultMap" type="Answer">
-        <id property="id" column="id" />
-        <result property="content" column="content" />
-        <result property="createDate" column="createDate" />
-        <result property="modifyDate" column="modifyDate" />
+        <result property="id" column="a_id" />
+        <result property="content" column="a_content" />
+        <result property="createDate" column="a_createDate" />
+        <result property="modifyDate" column="a_modifyDate" />
         <collection property="author" column="author_id" ofType="AmityUser" select="getAuthor"/>
     </resultMap>
 
@@ -114,8 +114,8 @@
         q.subject,
         a.id AS a_id,
         a.content AS a_content,
-        a.create_date AS a_create_date,
-        a.modify_date AS a_create_date,
+        a.create_date AS a_createDate,
+        a.modify_date AS a_modifyDate,
         su1.id AS author_id,
         su1.email AS author_email,
         su1.password AS author_password,

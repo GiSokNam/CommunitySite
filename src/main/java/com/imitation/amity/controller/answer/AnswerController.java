@@ -48,21 +48,21 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String modify(@PathVariable("id") Long id, AnswerForm answerForm, Principal principal) {
+    public String modify(AnswerForm answerForm, Principal principal, @PathVariable("id") Long id) {
         Answer answer = answerService.getAnswer(id);
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         answerForm.setContent(answer.getContent());
-        return "answer/modify";
+        return "question/answer_modify";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modify(@Valid AnswerForm answerForm, BindingResult bindingResult,
-                         @PathVariable("id") Long id, Principal principal) {
+                          Principal principal, @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
-            return "answer/modify";
+            return "question/answer_modify";
         }
         Answer answer = answerService.getAnswer(id);
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {
@@ -74,7 +74,7 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id, AnswerForm answerForm, Principal principal) {
+    public String delete(AnswerForm answerForm, Principal principal, @PathVariable("id") Long id) {
         Answer answer = answerService.getAnswer(id);
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");

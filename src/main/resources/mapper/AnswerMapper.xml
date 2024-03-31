@@ -20,7 +20,14 @@
         <result column="createDate" property="createDate"/>
         <result column="modifyDate" property="modifyDate"/>
         <collection property="author" column="authorId" ofType="AmityUser" select="getUsername"/>
+        <collection property="question" column="questionId" ofType="Question" select="getQuestion"/>
     </resultMap>
+
+    <select id="getQuestion" resultType="Question">
+        SELECT *
+        FROM QUESTION
+        WHERE id = #{questionId}
+    </select>
 
     <select id="getUsername" resultType="AmityUser">
         SELECT *
@@ -35,6 +42,7 @@
         a.create_date AS createDate,
         a.modify_date AS modifyDate,
         a.author_id AS authorId,
+        a.question_id AS questionId,
         su.username AS username
         FROM ANSWER a
         LEFT JOIN SITE_USER su ON  a.author_id = su.id
