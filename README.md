@@ -1,5 +1,10 @@
 ## 프로젝트 소개
-- 학습을 진행 후 커뮤니티 사이트를 만들어보면서 부족한 부분을 알아가고 다시 학습 및 정리를 위한 프로젝트입니다.
+- 학습을 진행 후 간단한 홈페이지를 만들어보면서 부족한 부분을 알아가고 다시 학습 및 정리를 위한 프로젝트입니다.
+
+## 프로젝트 진행 후 배운점
+- JPA에서 페이지네이션을 쉽게 구현하기 위해 Pageable 인터페이스를 사용하는데 Mybatis에서도 사용을 할 수 있음을 배웠으며,
+- JPA에서 ManyToOne/ManyToMany 관계에 대해 Mybatis에서의 처리방법 collection 기능에 대해 배울 수 있는 좋은 시간이었습니다.
+- 마지막으로, 쿼리의 중요성도 다시한번 알게되었습니다.
 
 ### 개발환경
 - IntelliJ IDEA Community Edition 2023.3.3
@@ -22,21 +27,12 @@
 - 메인 페이지
 - 회원
   - 회원가입 페이지
-  - 프로필
-  - 계정관리
-  - 활동내역
   - 로그아웃
 - 게시판
   - Q&A
-  - 지식
-  - 커뮤니티
-  - 이벤트
-  - 공지사항
 
 ### 회원가입 기능
 - 회원가입
-- 회원정보 수정
-- 회원 탈퇴
 
 ### 게시판 기능
 - 게시글 등록/ 수정/ 삭제
@@ -52,52 +48,30 @@
 - config
   - SecurityConfig
 - domain
-  - QuestionBoard
-  - knowledgeBoard
-  - BulletinBoard
-  - EventBoard
-  - NoticeBoard
-  - Comment
+  - Question
+  - Answer
   - AmityUser
 - controller
-  - QuestionBoardController
-  - knowledgeBoardController
-  - BulletinBoardController
-  - EventBoardController
-  - NoticeBoardController
+  - QuestionController
+  - AnswerController
   - AmityUserController
 - service
-  - QuestionBoardService
-  - knowledgeBoardService
-  - BulletinBoardService
-  - EventBoardService
-  - NoticeBoardService
+  - QuestionService
+  - AnswerService
   - AmityUserService
 - repository
+  - answer
+    - AnswerMapper 
+    - AnswerRepository 
   - amityuser
     - AmityUserMapper
     - AmityUserRepository
   - question
-    - QuestionBoardMapper
-    - QuestionBoardRepository
-  - knowledge
-    - knowledgeBoardMapper
-    - knowledgeBoardRepository
-  - bulletin
-    - BulletinBoardMapper
-    - BulletinBoardRepository
-  - event
-    - EventBoardMapper
-    - EventBoardRepository
-  - notice
-    - NoticeBoardMapper    
-    - NoticeBoardRepository
+    - QuestionMapper
+    - QuestionRepository
 - mapper
-  - QuestionBoardMapper.xml
-  - knowledgeBoardMapper.xml
-  - BulletinBoardMapper.xml
-  - EventBoardMapper.xml
-  - NoticeBoardMapper.xml
+  - QuestionMapper.xml
+  - AnswerMapper.xml
   - AmityUserMapper.xml
 
 
