@@ -30,4 +30,12 @@ public class AnswerRepository {
     public void vote(Answer answer) {
         answerMapper.vote(answer);
     }
+
+    public int voteCountCheck(Answer answer) {
+        return answerMapper.voteCountCheck(answer);
+    }
+
+    public void voteToCancel(Answer answer) {
+        answerMapper.voteToCancel(answer);
+    }
 }

@@ -62,6 +62,12 @@ public class QuestionService {
 
     public void vote(Question question, AmityUser amityUser) {
         question.getVoter().add(amityUser);
-        questionRepository.vote(question);
+        int cnt = questionRepository.voteCountCheck(question);
+        if (cnt == 0) questionRepository.vote(question);
+        else questionRepository.voteToCancel(question);
+    }
+
+    public List<Question> getMainQnaList(Question question) {
+        return questionRepository.getMainQnaList(question);
     }
 }

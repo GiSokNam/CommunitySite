@@ -16,4 +16,8 @@ public interface AnswerMapper {
     void modify(Answer answer);
 
     void vote(Answer answer);
+
+    int voteCountCheck(Answer answer);
+
+    void voteToCancel(Answer answer);
 }

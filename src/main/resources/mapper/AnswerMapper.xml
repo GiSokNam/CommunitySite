@@ -77,5 +77,15 @@
         values(#{id}, #{author.id})
     </insert>
 
+    <select id="voteCountCheck" parameterType="Answer">
+        SELECT count(*)
+        FROM ANSWER_VOTER
+        WHERE ANSWER_ID=#{id} AND VOTER_ID=#{author.id}
+    </select>
+
+    <delete id="voteToCancel" parameterType="Answer">
+        DELETE FROM ANSWER_VOTER WHERE ANSWER_ID = #{id} AND VOTER_ID = #{author.id};
+    </delete>
+
 
 </mapper>

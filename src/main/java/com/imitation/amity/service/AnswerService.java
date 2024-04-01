@@ -48,6 +48,8 @@ public class AnswerService {
 
     public void vote(Answer answer, AmityUser amityUser) {
         answer.getVoter().add(amityUser);
-        answerRepository.vote(answer);
+        int cnt = answerRepository.voteCountCheck(answer);
+        if(cnt == 0) answerRepository.vote(answer);
+        else answerRepository.voteToCancel(answer);
     }
 }

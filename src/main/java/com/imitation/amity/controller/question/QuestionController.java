@@ -39,7 +39,7 @@ public class QuestionController {
         model.addAttribute("kw", kw);
         return "question/list";
     }
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
     public String detail(Model model,
                          @PathVariable("id") Long id,
@@ -95,20 +95,20 @@ public class QuestionController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id, Principal principal) {
-        Question question = this.questionService.getQuestion(id);
+        Question question = questionService.getQuestion(id);
         if (!question.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
-        this.questionService.delete(question);
+        questionService.delete(question);
         return "redirect:/question/list";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
     public String questionVote(@PathVariable("id") Long id, Principal principal) {
-        Question question = this.questionService.getQuestion(id);
-        AmityUser amityUser = this.userService.getUser(principal.getName());
-        this.questionService.vote(question, amityUser);
+        Question question = questionService.getQuestion(id);
+        AmityUser amityUser = userService.getUser(principal.getName());
+        questionService.vote(question, amityUser);
         return String.format("redirect:/question/detail/%s", id);
     }
 

@@ -42,4 +42,16 @@ public class QuestionRepository {
     public void vote(Question question) {
         questionMapper.vote(question);
     }
+
+    public int voteCountCheck(Question question) {
+        return questionMapper.voteCountCheck(question);
+    }
+
+    public void voteToCancel(Question question) {
+        questionMapper.voteToCancel(question);
+    }
+
+    public List<Question> getMainQnaList(Question question) {
+        return questionMapper.getMainQnaList(question);
+    }
 }

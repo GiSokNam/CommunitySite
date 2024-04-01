@@ -19,7 +19,15 @@
             <div class="col-6">
                 <div class="p-3">
                     <a class="text-decoration-none" th:href="@{|/question/list|}">Q&A</a>
-                    <ul class="list-group list-group-flush">
+                    <ul th:if="${questionList.size > 0 and questionList != null}"
+                        th:each="question : ${questionList}" class="list-group list-group-flush">
+                        <div>
+                            <a class="text-decoration-none" th:href="@{|/question/detail/${question.id}|}">
+                                <li class="list-group-item" th:text="${question.subject}" ></li>
+                            </a>
+                        </div>
+                    </ul>
+                    <ul th:if="${questionList.size == 0 or questionList == null}" class="list-group list-group-flush">
                         <li class="list-group-item">First item</li>
                         <li class="list-group-item">Second item</li>
                         <li class="list-group-item">Third item</li>
@@ -28,7 +36,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-6">
+            <!--<div class="col-6">
                 <div class="p-3">
                     <a class="text-decoration-none" href="community/list.html">커뮤니티</a>
                     <ul class="list-group list-group-flush">
@@ -63,7 +71,7 @@
                         <li class="list-group-item">Fifth item</li>
                     </ul>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 

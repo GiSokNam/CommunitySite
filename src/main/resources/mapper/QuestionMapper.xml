@@ -185,4 +185,21 @@
         values(#{id}, #{author.id})
     </insert>
 
+    <select id="voteCountCheck" parameterType="Question">
+        SELECT count(*)
+        FROM QUESTION_VOTER
+        WHERE QUESTION_ID=#{id} AND VOTER_ID=#{author.id}
+    </select>
+
+    <delete id="voteToCancel" parameterType="Question">
+        DELETE FROM QUESTION_VOTER WHERE QUESTION_ID=#{id} AND VOTER_ID=#{author.id};
+    </delete>
+
+    <select id="getMainQnaList" parameterType="Question">
+        SELECT ID,SUBJECT
+        FROM QUESTION
+        ORDER BY ID DESC
+        LIMIT 0, 5;
+    </select>
+
 </mapper>

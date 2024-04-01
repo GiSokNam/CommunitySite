@@ -22,4 +22,10 @@ public interface QuestionMapper {
     void delete(Question question);
 
     void vote(Question question);
+
+    int voteCountCheck(Question question);
+
+    void voteToCancel(Question question);
+
+    List<Question> getMainQnaList(Question question);
 }

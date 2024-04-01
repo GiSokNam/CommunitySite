@@ -23,7 +23,7 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{|/question/list|}">Q&A</a>
                     </li>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="../knowledge/list.html">지식</a>
                     </li>
                     <li class="nav-item">
@@ -34,9 +34,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../notice/list.html">공지사항</a>
-                    </li>
+                    </li>-->
                 </ul>
                 <ul class="navbar-nav nav-underline">
+                    <li class="nav-item">
+                        <a class="nav-link text-decoration-none" sec:authorize="isAuthenticated()" th:text="${#authentication.getPrincipal().getUsername()}"></a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
                         <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
